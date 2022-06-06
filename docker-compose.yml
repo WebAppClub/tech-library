@@ -3,7 +3,7 @@ version: '3'
 services:
   web:
     container_name: techlib_web
-    build: .docker/web/
+    build: ./web
     entrypoint:
       - sh
     command:
@@ -16,7 +16,16 @@ services:
     environment:
       - NODE_ENV=development
     volumes:
-      - ./web:/web
+      - ./web:/usr/web
     ports:
       - '3000:3000'
+    tty: true
+
+  api:
+    build: ./api
+    command: cargo watch -x run
+    volumes:
+      - ./api:/usr/api
+    ports:
+      - '8000:8000'
     tty: true
