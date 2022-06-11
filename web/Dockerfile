@@ -10,9 +10,11 @@ RUN apt-get update && apt-get install -y yarn
 
 RUN pwd
 
-RUN mkdir -p /usr/web
-WORKDIR /usr/web
+RUN mkdir web
+WORKDIR /web
 
-COPY . /usr/web
+COPY . /web
 
 RUN yarn install
+
+CMD ["cargo","watch", "-x", "'run --bin app'"]
