@@ -1,10 +1,12 @@
-use actix_web::{App, HttpServer};
-use api::routes;
+use api::startup::Application;
 
-#[actix_rt::main]
+// (仮) 設定をどこから取ってくるかは相談。
+const HOST: [u8; 4] = [127, 0, 0, 1];
+const PORT: u16 = 8080;
+
+#[tokio::main]
 async fn main() -> std::io::Result<()> {
-    HttpServer::new(|| App::new().configure(routes::routes))
-        .bind("api:8000")?
-        .run()
-        .await
+    let application = Application::build(HOST, PORT)?;
+    application.start_server().await?;
+    Ok(())
 }

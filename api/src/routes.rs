@@ -1,6 +1,7 @@
-use actix_web::{web};
-use crate::controllers::index;
+use actix_web::web;
+
+use crate::controllers::health_check;
 
 pub fn routes(cfg: &mut web::ServiceConfig) {
-    cfg.route("/", web::get().to(index::index));
+    cfg.route("/health_check", web::get().to(health_check));
 }
