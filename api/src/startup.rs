@@ -15,7 +15,7 @@ impl Application {
         let address = SocketAddr::from((host, port));
         let listener = TcpListener::bind(address)?;
         let port = listener.local_addr().unwrap().port();
-        let server = start_server(listener)?;
+        let server = build_server(listener)?;
 
         Ok(Self { port, server })
     }
@@ -29,7 +29,7 @@ impl Application {
     }
 }
 
-pub fn start_server(listener: TcpListener) -> Result<Server, std::io::Error> {
+fn build_server(listener: TcpListener) -> Result<Server, std::io::Error> {
     let server = HttpServer::new(move || App::new().configure(routes::routes))
         .listen(listener)?
         .run();
