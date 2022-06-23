@@ -25,5 +25,6 @@ FROM rust:1.61.0-bullseye
 RUN apt-get update && rm -rf /var/lib/apt/lists/*
 COPY --from=builder /api .
 
-RUN cargo install diesel_cli
+# 必要になったらコメントアウトを外す
+# RUN cargo install diesel_cli
 RUN cargo install cargo-watch
