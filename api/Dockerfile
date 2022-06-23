@@ -2,6 +2,7 @@
 FROM rust:1.61.0 as develop
 WORKDIR /api
 RUN cargo install cargo-watch
+RUN cargo install diesel_cli
 COPY . .
 
 ### build ###
