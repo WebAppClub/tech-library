@@ -18,15 +18,17 @@ services:
     volumes:
       - ./web:/web
     ports:
-      - '3000:3000'
+      - 3000:3000
     tty: true
 
   api:
+    container_name: techlib_api
     build: ./api
+    command: cargo watch -x 'run'
     environment:
       - CHOKIDAR_USEPOLLING=true
     volumes:
       - ./api/src:/api/src/
     ports:
-      - '8000:8000'
+      - 8000:8000
     tty: true

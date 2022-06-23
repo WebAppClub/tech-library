@@ -17,4 +17,3 @@ COPY . /web
 
 RUN yarn install
 
-CMD ["cargo","watch", "-x", "'run --bin app'"]

@@ -1,6 +1,6 @@
 FROM rust:1.61.0 as builder
 
-RUN USER=root cargo new --bin api
+RUN cargo new --bin api
 WORKDIR /api
 
 COPY ./Cargo.lock ./Cargo.lock
