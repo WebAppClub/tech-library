@@ -23,8 +23,10 @@ services:
 
   api:
     container_name: techlib_api
-    build: ./api
-    command: cargo watch -x 'run'
+    build:
+      context: ./api
+      target: 'develop'
+    command: /bin/sh -c "cargo watch -x run"
     environment:
       - CHOKIDAR_USEPOLLING=true
     volumes:
