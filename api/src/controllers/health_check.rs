@@ -12,5 +12,5 @@ pub async fn health_check() -> HttpResponse {
     //! ## Middleware
     //!     Nothing
 
-    HttpResponse::Ok().body("Hello w")
+    HttpResponse::Ok().finish()
 }

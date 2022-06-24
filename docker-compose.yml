@@ -26,7 +26,7 @@ services:
     build:
       context: ./api
       target: 'develop'
-    command: /bin/sh -c "cargo watch -x run"
+    command: /bin/sh -c "cargo watch -x run --poll"
     environment:
       - CHOKIDAR_USEPOLLING=true
     volumes:
