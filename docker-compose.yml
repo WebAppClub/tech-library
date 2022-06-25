@@ -13,6 +13,22 @@ services:
       - POSTGRES_USER=admin
       - POSTGRES_DB=techlib_db
 
+  api:
+    container_name: techlib_api
+    build:
+      context: ./api
+      target: develop
+    command: /bin/sh -c "cargo watch -x run --poll"
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    volumes:
+      - ./api/src:/api/src/
+    ports:
+      - 8000:8000
+    tty: true
+    depends_on:
+      - db
+
   web:
     container_name: techlib_web
     build: ./web
@@ -33,20 +49,8 @@ services:
     ports:
       - 3000:3000
     tty: true
-
-  api:
-    container_name: techlib_api
-    build:
-      context: ./api
-      target: develop
-    command: /bin/sh -c "cargo watch -x run --poll"
-    environment:
-      - CHOKIDAR_USEPOLLING=true
-    volumes:
-      - ./api/src:/api/src/
-    ports:
-      - 8000:8000
-    tty: true
+    depends_on:
+      - api
 
 volumes:
   db-store:
