@@ -1,6 +1,18 @@
 version: '3'
 
 services:
+  db:
+    container_name: techlib_db
+    image: postgres:14
+    ports:
+      - 5432:5432
+    volumes:
+      - db-store:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=passw0rd
+      - POSTGRES_USER=admin
+      - POSTGRES_DB=techlib_db
+
   web:
     container_name: techlib_web
     build: ./web
@@ -26,7 +38,7 @@ services:
     container_name: techlib_api
     build:
       context: ./api
-      target: 'develop'
+      target: develop
     command: /bin/sh -c "cargo watch -x run --poll"
     environment:
       - CHOKIDAR_USEPOLLING=true
@@ -35,3 +47,6 @@ services:
     ports:
       - 8000:8000
     tty: true
+
+volumes:
+  db-store:
