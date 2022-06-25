@@ -52,5 +52,16 @@ services:
     depends_on:
       - api
 
+  nginx:
+    container_name: techlib_nginx
+    image: nginx:1.22.0
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - api
+      - web
+
 volumes:
   db-store:
