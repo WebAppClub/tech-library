@@ -1,4 +1,4 @@
-FROM node:16.15.0
+FROM node:16.15-bullseye
 
 ENV LANG=c.UTF-8
 ENV TZ=Asia/Tokyo
