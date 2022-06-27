@@ -12,6 +12,7 @@ name = "api"
 
 [dependencies]
 actix-web = "4.0.1"
+diesel = { version = "1.4.8", features = ["postgres", "chrono", "uuidv07", "r2d2"]}
 secrecy = { version = "0.8.0", features = ["serde"] }
 tokio = { version = "1.18.2", features = ["macros", "rt-multi-thread"] }
 
