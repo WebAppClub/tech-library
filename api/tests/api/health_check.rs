@@ -12,6 +12,8 @@ async fn health_check_returns_200() {
         .send()
         .await
         .expect("Failed to send request.");
+
+    // Assert
     assert_eq!(response.status(), reqwest::StatusCode::OK);
     assert_eq!(response.content_length(), Some(0));
 }
