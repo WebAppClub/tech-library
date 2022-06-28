@@ -8,9 +8,10 @@ async fn health_check_returns_200() {
 
     // Act
     let response = client
-        .get(&format!("{}/health_check", &app.address))
+        .get(&format!("{}/api/health_check", &app.address))
         .send()
         .await
         .expect("Failed to send request.");
     assert_eq!(response.status(), reqwest::StatusCode::OK);
+    assert_eq!(response.content_length(), Some(0));
 }
