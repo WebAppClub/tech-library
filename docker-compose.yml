@@ -22,7 +22,7 @@ services:
     environment:
       - CHOKIDAR_USEPOLLING=true
     volumes:
-      - ./api/src:/api/src/
+      - ./api:/api
     ports:
       - 8000:8000
     tty: true

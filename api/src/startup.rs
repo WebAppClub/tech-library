@@ -1,4 +1,4 @@
-use std::net::{SocketAddr, TcpListener};
+use std::net::TcpListener;
 use std::time::Duration;
 
 use actix_web::dev::Server;
@@ -7,6 +7,7 @@ use actix_web::{App, HttpServer};
 use diesel::r2d2::{ConnectionManager, Pool};
 use diesel::PgConnection;
 
+use crate::configuration::{DatabaseSettings, Settings};
 use crate::routes;
 
 pub struct Application {
@@ -15,11 +16,15 @@ pub struct Application {
 }
 
 impl Application {
-    pub fn build(host: [u8; 4], port: u16) -> Result<Self, std::io::Error> {
-        let address = SocketAddr::from((host, port));
+    pub fn build(configuration: Settings) -> Result<Self, std::io::Error> {
+        let db_pool = get_connection_pool(&configuration.database);
+        let address = format!(
+            "{}:{}",
+            configuration.application.host, configuration.application.port
+        );
+        println!("{}", address);
         let listener = TcpListener::bind(address)?;
         let port = listener.local_addr().unwrap().port();
-        let db_pool = get_connection_pool();
         let server = build_server(listener, db_pool)?;
 
         Ok(Self { port, server })
@@ -34,12 +39,10 @@ impl Application {
     }
 }
 
-// (仮) これも設定ファイルからとってくる
-const DATABASE_URL: &str = "postgres://admin:passw0rd@localhost:5432/techlib_db";
 pub type PgPool = Pool<ConnectionManager<PgConnection>>;
 
-pub fn get_connection_pool() -> PgPool {
-    let manager = ConnectionManager::<PgConnection>::new(DATABASE_URL);
+pub fn get_connection_pool(database_settings: &DatabaseSettings) -> PgPool {
+    let manager = ConnectionManager::<PgConnection>::new(database_settings.with_db());
     Pool::builder()
         .connection_timeout(Duration::from_secs(2))
         .build(manager)
