@@ -28,7 +28,7 @@ pub struct DatabaseSettings {
 }
 
 impl DatabaseSettings {
-    pub fn with_db(&self) -> String {
+    pub fn uri_with_db(&self) -> String {
         let ssl_mode: PgSslMode = self.require_ssl.into();
         format!(
             "postgres://{}:{}@{}:{}/{}?sslmode={}",
@@ -41,7 +41,7 @@ impl DatabaseSettings {
         )
     }
 
-    pub fn without_db(&self) -> String {
+    pub fn uri(&self) -> String {
         let ssl_mode: PgSslMode = self.require_ssl.into();
         format!(
             "postgresql://{}:{}@{}:{}/postgres?sslmode={}",

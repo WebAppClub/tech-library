@@ -42,7 +42,7 @@ impl Application {
 pub type PgPool = Pool<ConnectionManager<PgConnection>>;
 
 pub fn get_connection_pool(database_settings: &DatabaseSettings) -> PgPool {
-    let manager = ConnectionManager::<PgConnection>::new(database_settings.with_db());
+    let manager = ConnectionManager::<PgConnection>::new(database_settings.uri_with_db());
     Pool::builder()
         .connection_timeout(Duration::from_secs(2))
         .build(manager)

@@ -39,7 +39,7 @@ pub async fn spawn_app() -> TestApp {
 
 fn configure_database(database_settings: &DatabaseSettings) -> PgPool {
     // Create();
-    let connection = ConnectionManager::<PgConnection>::new(database_settings.without_db())
+    let connection = ConnectionManager::<PgConnection>::new(database_settings.uri())
         .connect()
         .expect("Failed to create a new connection.");
     diesel::sql_query(format!(
@@ -52,7 +52,7 @@ fn configure_database(database_settings: &DatabaseSettings) -> PgPool {
     .expect("Failed to create database.");
 
     // Migrate
-    let manager = ConnectionManager::<PgConnection>::new(database_settings.with_db());
+    let manager = ConnectionManager::<PgConnection>::new(database_settings.uri_with_db());
     let pool = r2d2::Pool::builder()
         .connection_timeout(Duration::from_secs(2))
         .build(manager)
