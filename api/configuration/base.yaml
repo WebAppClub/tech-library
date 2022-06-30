@@ -3,9 +3,9 @@ application:
   port: 8000
 
 database:
-  host: "db"
+  host: db
   port: 5432
-  username: "admin"
-  password: "passw0rd"
-  database_name: "techlib_db"
+  username: admin
+  password: passw0rd
+  database_name: techlib_db
   require_ssl: false
