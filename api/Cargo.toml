@@ -12,9 +12,14 @@ name = "api"
 
 [dependencies]
 actix-web = "4.0.1"
-diesel = { version = "1.4.8", features = ["postgres", "chrono", "uuidv07", "r2d2"]}
+config = { version = "0.13.1", default-features = false, features = ["yaml"] }
+diesel = { version = "1.4.8", features = ["postgres", "chrono", "uuidv07", "r2d2"] }
 secrecy = { version = "0.8.0", features = ["serde"] }
+serde = "1.0.137"
+serde-aux = "3.0.1"
 tokio = { version = "1.18.2", features = ["macros", "rt-multi-thread"] }
+uuid = { version = "1.1.2", features = ["v4"] }
 
 [dev-dependencies]
+diesel_migrations = "1.4.0"
 reqwest = { version = "0.11", features = ["json"] }

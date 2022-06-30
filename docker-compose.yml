@@ -21,8 +21,10 @@ services:
     command: /bin/sh -c "cargo watch -x run --poll"
     environment:
       - CHOKIDAR_USEPOLLING=true
+      - APP_ENVIRONMENT=production
+      - APP_DATABASE__REQUIRE_SSL=false
     volumes:
-      - ./api/src:/api/src/
+      - ./api:/api
     ports:
       - 8000:8000
     tty: true
