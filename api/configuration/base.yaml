@@ -3,7 +3,7 @@ application:
   port: 8000
 
 database:
-  host: 127.0.0.1
+  host: db
   port: 5432
   username: "admin"
   password: "passw0rd"
