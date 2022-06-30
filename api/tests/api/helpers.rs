@@ -1,10 +1,10 @@
 use std::time::Duration;
 
 use diesel::r2d2::{self, ConnectionManager, ManageConnection};
-use diesel::{Connection, PgConnection, RunQueryDsl};
+use diesel::{PgConnection, RunQueryDsl};
 use uuid::Uuid;
 
-use api::configuration::{get_configuration, DatabaseSettings, Settings};
+use api::configuration::{get_configuration, DatabaseSettings};
 use api::startup::{get_connection_pool, Application, PgPool};
 
 pub struct TestApp {
@@ -39,8 +39,9 @@ pub async fn spawn_app() -> TestApp {
 
 fn configure_database(database_settings: &DatabaseSettings) -> PgPool {
     // Create();
-    let connection =
-        ConnectionManager::<PgConnection>::new(database_settings.without_db()).connect().expect("Failed to create a new connection.");
+    let connection = ConnectionManager::<PgConnection>::new(database_settings.without_db())
+        .connect()
+        .expect("Failed to create a new connection.");
     diesel::sql_query(format!(
         r#"
     CREATE DATABASE "{}";
