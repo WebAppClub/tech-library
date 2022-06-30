@@ -44,7 +44,7 @@ impl DatabaseSettings {
     pub fn without_db(&self) -> String {
         let ssl_mode: PgSslMode = self.require_ssl.into();
         format!(
-            "postgres://{}:{}@{}:{}?sslmode={}",
+            "postgresql://{}:{}@{}:{}/postgres?sslmode={}",
             self.username,
             self.password.expose_secret(),
             self.host,
@@ -78,14 +78,14 @@ impl From<bool> for PgSslMode {
 }
 
 pub enum AppEnvironment {
-    Develop,
+    Local,
     Production,
 }
 
 impl AppEnvironment {
     pub fn as_str(&self) -> &'static str {
         match self {
-            AppEnvironment::Develop => "develop",
+            AppEnvironment::Local => "local",
             AppEnvironment::Production => "production",
         }
     }
@@ -96,10 +96,10 @@ impl TryInto<AppEnvironment> for String {
 
     fn try_into(self) -> Result<AppEnvironment, Self::Error> {
         match self.to_lowercase().as_str() {
-            "develop" => Ok(AppEnvironment::Develop),
+            "local" => Ok(AppEnvironment::Local),
             "production" => Ok(AppEnvironment::Production),
             other => Err(format!(
-                "`{other}` is not supported environment. Use either `develop` or `production`."
+                "`{other}` is not supported environment. Use either `local` or `production`."
             )),
         }
     }
@@ -110,7 +110,7 @@ pub fn get_configuration() -> Result<Settings, config::ConfigError> {
     let configuration_directory = base_path.join("configuration");
 
     let app_environment: AppEnvironment = std::env::var("APP_ENVIRONMENT")
-        .unwrap_or_else(|_| "develop".into())
+        .unwrap_or_else(|_| "local".into())
         .try_into()
         .expect("Failed to parse `APP_ENVIRONMENT`.");
 
@@ -120,6 +120,7 @@ pub fn get_configuration() -> Result<Settings, config::ConfigError> {
             config::File::from(configuration_directory.join(app_environment.as_str()))
                 .required(true),
         )
+        // E.g. `APP_APPLICATION__HOST` は `application.host` にセットされる
         .add_source(
             config::Environment::with_prefix("APP")
                 .prefix_separator("_")
